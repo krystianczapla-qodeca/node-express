@@ -1,0 +1,65 @@
+mutation
+{
+  createUser(userInput: {name:"tester", email: "test@test.com" password: "tester"}) {
+    _id
+    email
+  }
+}
+
+mutation
+{
+  createUser(userInput: {name:"tester", email: "test1@gmail.com" password: "tester"}) {
+    _id
+    email
+  }
+}
+
+{
+ login(email: "test1@gmail.com", password: "tester") {
+    userId
+    token
+  }
+}
+
+
+mutation
+{
+  createPost(postInput: {title: "Tests", content: "Testss", imageUrl: "jfgjhgjfg"}) {
+    _id
+    title
+    content
+    imageUrl
+    creator {
+      name
+    }
+    createdAt
+  }
+}
+
+
+query {
+  posts {
+    posts{
+      _id
+      title
+      content
+    }
+    totalPosts
+  }
+}
+
+query {
+  post (id: "${postId}") {
+    title
+    content
+    imageUrl
+    creator {
+      name
+    }
+    createdAt
+  }
+}
+
+user {
+  status
+}
