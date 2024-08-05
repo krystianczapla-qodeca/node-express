@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  first_name String
+  last_name  String
+  email      String     @unique
+  phone      String     @unique
+  status     String
+  type       String
+  user_role  UserRole[]
+}
+
+model UserRole {
+  id      Int  @id @default(autoincrement())
+  user_id Int
+  role_id Int
+  user    User @relation(fields: [user_id], references: [id])
+  role    Role @relation(fields: [role_id], references: [id])
+}
+
+model Role {
+  id             Int             @id @default(autoincrement())
+  name           String
+  blocked        Boolean         @default(false)
+  user_role      UserRole[]
+  role_privilege RolePrivilege[]
+}
+
+model RolePrivilege {
+  id           Int       @id @default(autoincrement())
+  role_id      Int
+  privilege_id Int
+  role         Role      @relation(fields: [role_id], references: [id])
+  privilege    Privilege @relation(fields: [privilege_id], references: [id])
+}
+
+model Privilege {
+  id                 Int             @id @default(autoincrement())
+  name               String
+  type               String
+  description        String
+  role_privilege     RolePrivilege[]
+  privilege_group    PrivilegeGroup  @relation(fields: [privilege_group_id], references: [id])
+  privilege_group_id Int
+}
+
+model PrivilegeGroup {
+  id        Int         @id @default(autoincrement())
+  name      String
+  privilege Privilege[]
+}

@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    container_name: mssql-server
+    ports:
+      - '1433:1433'
+    environment:
+      MSSQL_DATABASE: 'qodeca'
+      SA_PASSWORD: 'xsw2#EDC'
+      ACCEPT_EULA: 'Y'
